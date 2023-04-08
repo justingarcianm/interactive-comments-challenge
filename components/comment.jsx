@@ -18,29 +18,31 @@ const Comment = ({ comment, currentUser }) => {
     <div>
       <div className="rounded shadow-md p-4 mb-6">
         <div className="flex gap-4">
-          <div className="rounded-lg p-2 flex flex-col gap-2 items-center bg-gray-200">
-            <button>+</button>
-            <span>{scoreNumber}</span>
-            <button>-</button>
+          <div className="rounded-lg p-2 font-semibold flex flex-col gap-2 items-center bg-gray-200">
+            <button className="text-accent-reverse">+</button>
+            <span className="text-accent">{scoreNumber}</span>
+            <button className="text-accent-reverse">-</button>
           </div>
           <div className="flex-grow flex flex-col gap-2">
             <div className="flex gap-2 justify-between items-center">
               <div className="flex gap-2 items-center relative">
                 <Image src={author.imagePNG} alt={`${author.name}'s avatar image`} width={25} height={25} />
-                <h3 className="font-bold">
+                <h3 className="font-semibold text-dark-blue">
                   {author.name}
-                  {currentUser.id === author.id && <span className="py-1 px-2 rounded bg-purple-500 font-semibold text-white ms-1 text-sm">you</span>}
+                  {currentUser.id === author.id && <span className="py-1 px-2 rounded bg-moderate-blue font-semibold text-white ms-1 text-sm">you</span>}
                 </h3>
                 <Moment date={comment.createdAt} fromNow />
               </div>
               <div className="flex gap-4 justify-end items-center">
                 {currentUser.id === author.id ? (
                   <>
-                    <button>Delete</button>
-                    <button>Edit</button>
+                    <button className="text-delete">Delete</button>
+                    <button className="text-accent hover:text-light-grayish-blue">Edit</button>
                   </>
                 ) : (
-                  <button onClick={() => setShowReply(!showReply)}>Reply</button>
+                  <button className={`${showReply ? "text-light-grayish-blue" : "text-moderate-blue"} hover:text-light-grayish-blue`} onClick={() => setShowReply(!showReply)}>
+                    Reply
+                  </button>
                 )}
               </div>
             </div>

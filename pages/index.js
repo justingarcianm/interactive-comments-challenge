@@ -1,16 +1,27 @@
+import { useState } from "react";
 import Head from "next/head";
+import { Rubik } from "next/font/google";
+
 import Comment from "@/components/comment";
 import NewComment from "@/components/newComment";
-import axios from "axios";
+import Modal from "@/components/modal";
+
+const font = Rubik({
+  subsets: ["latin"],
+  display: "swap",
+});
 
 function Home({ comments, currentUser }) {
   // console.log(comments);
+
+  const [showModal, setShowModal] = useState(false);
+
   return (
     <>
       <Head>
         <title>Interactive Comments Section </title>
       </Head>
-      <main className="mx-auto max-w-3xl p-8 flex flex-col gap-6 min-h-screen">
+      <main className={`mx-auto max-w-3xl p-8 flex flex-col gap-6 min-h-screen ${font.className}`}>
         <section className="flex flex-col gap-6">
           {comments && comments.length ? (
             comments.map((comment) => <Comment key={comment.id} comment={comment} currentUser={currentUser} />)
@@ -32,11 +43,11 @@ function Home({ comments, currentUser }) {
 export async function getServerSideProps() {
   const URL = process.env.NEXT_PUBLIC_VERCEL_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` : "http://localhost:3000";
 
-  const res = await axios.get(`${URL}/api/comments`);
-  const comments = await res.data;
+  const res = await fetch(`${URL}/api/comments`);
+  const comments = await res.json();
 
-  const resUser = await axios.get(`${URL}/api/user`);
-  const currentUser = await resUser.data;
+  const resUser = await fetch(`${URL}/api/user`);
+  const currentUser = await resUser.json();
 
   return {
     props: {

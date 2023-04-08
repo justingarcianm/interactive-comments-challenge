@@ -1,3 +1,46 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    html {
+        font-size: 16px;
+        @apply text-grayish-blue
+    }
+
+    .text-accent {
+        @apply text-moderate-blue
+    }
+    .bg-accent {
+        @apply bg-moderate-blue text-white;
+        transition: ease 200ms all;
+    }
+    .bg-accent:hover {
+        @apply bg-light-grayish-blue;
+    }
+
+    .text-accent-reverse {
+        @apply text-light-grayish-blue
+    }
+    .text-accent-reverse:hover {
+        transition: ease 200ms all;
+        @apply text-moderate-blue;
+    }
+
+    .text-delete {
+        transition: ease 200ms all;
+        @apply text-soft-red;
+    }
+    .text-delete:hover {
+        @apply text-pale-red;
+    }
+
+    .delete-btn {
+        @apply bg-soft-red;
+        transition: ease 200ms all;
+    }
+    .delete-btn:hover {
+        @apply bg-pale-red
+    }
+
+}

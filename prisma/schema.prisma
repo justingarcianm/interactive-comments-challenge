@@ -34,7 +34,7 @@ model Reply {
   createdAt DateTime @default(now())
   author    User    @relation(fields: [authorId], references: [id])
   authorId  Int
-  comment   Comment @relation(fields: [commentID], references: [id])
+  comment   Comment @relation(fields: [commentID], references: [id], onDelete: Cascade, onUpdate: Cascade)
   content String
   score Int         @default(0)
   commentID Int

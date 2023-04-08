@@ -9,7 +9,7 @@ const NewComment = ({ currentUser }) => {
   const handleComment = async (e) => {
     const authorId = currentUser.id;
     e.preventDefault();
-    const data = await fetch("/api/createComment", {
+    const data = await fetch("/api/comment/createComment", {
       method: "POST",
       body: JSON.stringify({ content, authorId }),
     });
@@ -23,8 +23,8 @@ const NewComment = ({ currentUser }) => {
     <div className="rounded shadow-md p-4">
       <form className="flex gap-4 justify-between items-start relative" onSubmit={handleComment}>
         <Image src={currentUser.imagePNG} alt={`${currentUser.name}'s avatar image`} width={50} height={50} />
-        <textarea className="rounded flex-grow focus-visible:border-none focus:border-none" rows={6} placeholder="Add a comment..." onChange={(e) => setContent(e.target.value)} value={content} />
-        <button disabled={content === ""} type="submit" className="px-6 py-2 rounded-lg bg-purple-500 hover:bg-purple-700 text-white uppercase font-semibold">
+        <textarea className="rounded outline-none flex-grow" rows={6} placeholder="Add a comment..." onChange={(e) => setContent(e.target.value)} value={content} />
+        <button disabled={content === ""} type="submit" className="px-6 py-2 rounded-lg bg-accent uppercase font-semibold">
           Submit
         </button>
       </form>

@@ -9,7 +9,7 @@ const NewReply = ({ commentAuthor, currentUser, commentID }) => {
   const handleReply = async (e) => {
     const authorId = currentUser.id;
     e.preventDefault();
-    const data = await fetch("/api/createReply", {
+    const data = await fetch("/api/reply/createReply", {
       method: "POST",
       body: JSON.stringify({ content, authorId, commentID }),
     });
@@ -24,7 +24,7 @@ const NewReply = ({ commentAuthor, currentUser, commentID }) => {
       <form className="flex gap-4 justify-between items-start relative" onSubmit={handleReply}>
         <Image src={currentUser.imagePNG} alt={`${currentUser.name}'s avatar image`} width={50} height={50} />
         <textarea className="rounded flex-grow focus-visible:border-none focus:border-none" rows={6} placeholder={`@${commentAuthor} `} onChange={(e) => setContent(e.target.value)} value={content} />
-        <button disabled={content === ""} type="submit" className="px-6 py-2 rounded-lg bg-purple-500 hover:bg-purple-700 text-white uppercase font-semibold">
+        <button disabled={content === ""} type="submit" className="px-6 py-2 rounded-lg bg-accent uppercase font-semibold">
           Submit
         </button>
       </form>
