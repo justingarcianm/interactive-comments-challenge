@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Comment from "@/components/comment";
 import NewComment from "@/components/newComment";
+import axios from "axios";
 
 function Home({ comments, currentUser }) {
   // console.log(comments);
@@ -42,10 +43,6 @@ export async function getServerSideProps() {
       comments,
       currentUser,
     },
-    // Next.js will attempt to re-generate the page:
-    // - When a request comes in
-    // - At most once every 10 seconds
-    revalidate: 10, // In seconds
   };
 }
 
