@@ -1,12 +1,9 @@
 import Head from "next/head";
-import { Inter } from "next/font/google";
 import Comment from "@/components/comment";
 import NewComment from "@/components/newComment";
 
-const inter = Inter({ subsets: ["latin"] });
-
 function Home({ comments, currentUser }) {
-  console.log(comments);
+  // console.log(comments);
   return (
     <>
       <Head>
@@ -31,8 +28,9 @@ function Home({ comments, currentUser }) {
   );
 }
 
-export async function getStaticProps() {
-  const URL = `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` || "http://localhost:3000";
+export async function getServerSideProps() {
+  const URL = process.env.NEXT_PUBLIC_VERCEL_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` : "http://localhost:3000";
+
   const res = await fetch(`${URL}/api/comments`);
   const comments = await res.json();
 
