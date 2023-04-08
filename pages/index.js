@@ -32,11 +32,11 @@ function Home({ comments, currentUser }) {
 }
 
 export async function getStaticProps() {
-  // const res = await fetch(`${process.env.BASE_URL}/api/comments`);
-  const res = await fetch(`http://localhost:3000/api/comments`);
+  const URL = `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` || "http://localhost:3000";
+  const res = await fetch(`${URL}/api/comments`);
   const comments = await res.json();
 
-  const resUser = await fetch(`http://localhost:3000/api/user`);
+  const resUser = await fetch(`${URL}/api/user`);
   const currentUser = await resUser.json();
 
   return {
