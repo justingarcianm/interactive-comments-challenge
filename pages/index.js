@@ -1,7 +1,7 @@
-import { useState } from "react";
 import Head from "next/head";
 import { Rubik } from "next/font/google";
 
+import { ModalState } from "@/context/modal.context";
 import Comment from "@/components/comment";
 import NewComment from "@/components/newComment";
 import Modal from "@/components/modal";
@@ -13,28 +13,30 @@ const font = Rubik({
 
 function Home({ comments, currentUser }) {
   // console.log(comments);
-
-  const [showModal, setShowModal] = useState(false);
+  const { showModal } = ModalState();
 
   return (
     <>
       <Head>
         <title>Interactive Comments Section </title>
       </Head>
-      <main className={`mx-auto max-w-3xl p-8 flex flex-col gap-6 min-h-screen ${font.className}`}>
-        <section className="flex flex-col gap-6">
-          {comments && comments.length ? (
-            comments.map((comment) => <Comment key={comment.id} comment={comment} currentUser={currentUser} />)
-          ) : (
-            <>
-              <h3>No Comments</h3>
-            </>
-          )}
-        </section>
+      <main className={`${font.className} bg-light-gray relative`}>
+        <div className="mx-auto max-w-3xl p-8 flex flex-col gap-6 min-h-screen">
+          <section className="flex flex-col gap-6">
+            {comments && comments.length ? (
+              comments.map((comment) => <Comment key={comment.id} comment={comment} currentUser={currentUser} />)
+            ) : (
+              <>
+                <h3>No Comments</h3>
+              </>
+            )}
+          </section>
 
-        <section className="">
-          <NewComment currentUser={currentUser} />
-        </section>
+          <section className="">
+            <NewComment currentUser={currentUser} />
+          </section>
+        </div>
+        {showModal && <Modal />}
       </main>
     </>
   );

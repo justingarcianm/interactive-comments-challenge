@@ -20,10 +20,10 @@ const NewReply = ({ commentAuthor, currentUser, commentID }) => {
   };
 
   return (
-    <div className="rounded shadow-md p-4">
+    <div className="rounded shadow-md p-4 bg-very-light-gray">
       <form className="flex gap-4 justify-between items-start relative" onSubmit={handleReply}>
         <Image src={currentUser.imagePNG} alt={`${currentUser.name}'s avatar image`} width={50} height={50} />
-        <textarea className="rounded flex-grow focus-visible:border-none focus:border-none" rows={6} placeholder={`@${commentAuthor} `} onChange={(e) => setContent(e.target.value)} value={content} />
+        <textarea className="p-4 rounded flex-grow outline-none bg-transparent" rows={4} placeholder={`@${commentAuthor} `} onChange={(e) => setContent(e.target.value)} value={content} />
         <button disabled={content === ""} type="submit" className="px-6 py-2 rounded-lg bg-accent uppercase font-semibold">
           Submit
         </button>

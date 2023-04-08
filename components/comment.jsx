@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Moment from "react-moment";
+import { FaTrash, FaPencilAlt } from "react-icons/fa";
+import { TbArrowBackUp } from "react-icons/tb";
 
+import { ModalState } from "@/context/modal.context";
 import Reply from "./reply";
 import NewReply from "./newReply";
 
@@ -9,6 +12,7 @@ const Comment = ({ comment, currentUser }) => {
   const { author, replies } = comment;
   const [showReply, setShowReply] = useState(false);
   const [scoreNumber, setScoreNumber] = useState(comment.score);
+  const { showModal, prepDelete } = ModalState();
 
   useEffect(() => {
     setScoreNumber(comment.score);
@@ -16,7 +20,7 @@ const Comment = ({ comment, currentUser }) => {
 
   return (
     <div>
-      <div className="rounded shadow-md p-4 mb-6">
+      <div className="rounded shadow-md p-4 mb-6 bg-very-light-gray">
         <div className="flex gap-4">
           <div className="rounded-lg p-2 font-semibold flex flex-col gap-2 items-center bg-gray-200">
             <button className="text-accent-reverse">+</button>
@@ -36,12 +40,17 @@ const Comment = ({ comment, currentUser }) => {
               <div className="flex gap-4 justify-end items-center">
                 {currentUser.id === author.id ? (
                   <>
-                    <button className="text-delete">Delete</button>
-                    <button className="text-accent hover:text-light-grayish-blue">Edit</button>
+                    <button className={`${showModal ? "text-pale-red" : "text-delete"} flex gap-1 items-center`} onClick={() => prepDelete(comment.id, "comment")}>
+                      <FaTrash /> Delete
+                    </button>
+                    <button className="text-accent hover:text-light-grayish-blue flex gap-1 items-center">
+                      {" "}
+                      <FaPencilAlt /> Edit
+                    </button>
                   </>
                 ) : (
-                  <button className={`${showReply ? "text-light-grayish-blue" : "text-moderate-blue"} hover:text-light-grayish-blue`} onClick={() => setShowReply(!showReply)}>
-                    Reply
+                  <button className={`${showReply ? "text-light-grayish-blue" : "text-moderate-blue flex items-center gap-1 flex-nowrap"} hover:text-light-grayish-blue`} onClick={() => setShowReply(!showReply)}>
+                    <TbArrowBackUp /> Reply
                   </button>
                 )}
               </div>
