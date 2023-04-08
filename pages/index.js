@@ -32,11 +32,11 @@ function Home({ comments, currentUser }) {
 export async function getServerSideProps() {
   const URL = process.env.NEXT_PUBLIC_VERCEL_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` : "http://localhost:3000";
 
-  const res = await fetch(`${URL}/api/comments`);
-  const comments = await res.json();
+  const res = await axios.get(`${URL}/api/comments`);
+  const comments = await res.data;
 
-  const resUser = await fetch(`${URL}/api/user`);
-  const currentUser = await resUser.json();
+  const resUser = await axios.get(`${URL}/api/user`);
+  const currentUser = await resUser.data;
 
   return {
     props: {
