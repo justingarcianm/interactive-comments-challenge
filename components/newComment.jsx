@@ -9,7 +9,7 @@ const NewComment = ({ currentUser }) => {
   const handleComment = async (e) => {
     const authorId = currentUser.id;
     e.preventDefault();
-    const data = await fetch("/api/comment/createComment", {
+    const data = await fetch("/api/comments/createComment", {
       method: "POST",
       body: JSON.stringify({ content, authorId }),
     });

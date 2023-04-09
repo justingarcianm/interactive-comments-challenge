@@ -36,7 +36,7 @@ function Home({ comments, currentUser }) {
             <NewComment currentUser={currentUser} />
           </section>
         </div>
-        {showModal && <Modal />}
+        {showModal && <Modal currentUserId={currentUser.id} />}
       </main>
     </>
   );

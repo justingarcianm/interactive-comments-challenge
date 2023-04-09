@@ -40,7 +40,7 @@ const Comment = ({ comment, currentUser }) => {
               <div className="flex gap-4 justify-end items-center">
                 {currentUser.id === author.id ? (
                   <>
-                    <button className={`${showModal ? "text-pale-red" : "text-delete"} flex gap-1 items-center`} onClick={() => prepDelete(comment.id, "comment")}>
+                    <button className={`${showModal ? "text-pale-red" : "text-delete"} flex gap-1 items-center`} onClick={() => prepDelete(comment.id, "comment", author.id)}>
                       <FaTrash /> Delete
                     </button>
                     <button className="text-accent hover:text-light-grayish-blue flex gap-1 items-center">

@@ -1,7 +1,33 @@
 import { ModalState } from "@/context/modal.context";
+import { useRouter } from "next/navigation";
 
-const Modal = () => {
-  const { objID, objType, showModal, setShowModal } = ModalState();
+const Modal = ({ currentUserId }) => {
+  const { objID, objType, showModal, setShowModal, authorId } = ModalState();
+  const router = useRouter();
+
+  const removeObj = async (id, type) => {
+    const info = {
+      currentUserId,
+      authorId,
+      id,
+    };
+    if (type === "comment") {
+      const data = await fetch(`/api/comments/${id}`, {
+        method: "DELETE",
+        // body: JSON.stringify({ currentUserId, authorId, id }),
+        headers: new Headers({
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        }),
+      });
+      const res = await data.json();
+      router.refresh();
+      setShowModal(false);
+      if (!res.ok) console.error(res.message);
+    } else {
+      console.log("reply");
+    }
+  };
 
   return (
     <>
@@ -15,7 +41,7 @@ const Modal = () => {
           <button className="text-white uppercase rounded py-2 px-7 bg-dark-blue hover:bg-grayish-blue" onClick={() => setShowModal(!showModal)}>
             No, Cancel
           </button>
-          <button className="text-white uppercase rounded py-2 px-7 delete-btn" onClick={() => setShowModal(!showModal)}>
+          <button className="text-white uppercase rounded py-2 px-7 delete-btn" onClick={() => removeObj(objID, objType)}>
             Yes, Delete
           </button>
         </div>
