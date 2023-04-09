@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import Moment from "react-moment";
 import { FaTrash, FaPencilAlt } from "react-icons/fa";
@@ -7,24 +7,21 @@ import { TbArrowBackUp } from "react-icons/tb";
 import { ModalState } from "@/context/modal.context";
 import Reply from "./reply";
 import NewReply from "./newReply";
+import Edit from "./edit";
 
 const Comment = ({ comment, currentUser }) => {
   const { author, replies } = comment;
   const [showReply, setShowReply] = useState(false);
-  const [scoreNumber, setScoreNumber] = useState(comment.score);
+  const [showEdit, setShowEdit] = useState(false);
   const { showModal, prepDelete } = ModalState();
-
-  useEffect(() => {
-    setScoreNumber(comment.score);
-  }, [comment.score]);
 
   return (
     <div>
       <div className="rounded shadow-md p-4 mb-6 bg-very-light-gray">
-        <div className="flex gap-4">
-          <div className="rounded-lg p-2 font-semibold flex flex-col gap-2 items-center bg-gray-200">
+        <div className="flex gap-4 items-start">
+          <div className="rounded-lg p-2 font-semibold flex flex-col gap-2 items-center bg-gray-200 justify-start">
             <button className="text-accent-reverse">+</button>
-            <span className="text-accent">{scoreNumber}</span>
+            <span className="text-accent">{comment.score}</span>
             <button className="text-accent-reverse">-</button>
           </div>
           <div className="flex-grow flex flex-col gap-2">
@@ -43,8 +40,7 @@ const Comment = ({ comment, currentUser }) => {
                     <button className={`${showModal ? "text-pale-red" : "text-delete"} flex gap-1 items-center`} onClick={() => prepDelete(comment.id, "comment", author.id)}>
                       <FaTrash /> Delete
                     </button>
-                    <button className="text-accent hover:text-light-grayish-blue flex gap-1 items-center">
-                      {" "}
+                    <button className={`${showEdit ? "text-light-grayish-blue" : "text-accent"} hover:text-light-grayish-blue flex gap-1 items-center`} onClick={() => setShowEdit(!showEdit)}>
                       <FaPencilAlt /> Edit
                     </button>
                   </>
@@ -55,7 +51,7 @@ const Comment = ({ comment, currentUser }) => {
                 )}
               </div>
             </div>
-            <div>{comment.content}</div>
+            <div>{showEdit ? <Edit currentUserId={currentUser.id} data={comment.content} type={"comment"} id={comment.id} authorID={author.id} /> : comment.content}</div>
           </div>
         </div>
       </div>

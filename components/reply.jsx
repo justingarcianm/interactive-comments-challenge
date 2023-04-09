@@ -5,10 +5,12 @@ import { FaTrash, FaPencilAlt } from "react-icons/fa";
 import { TbArrowBackUp } from "react-icons/tb";
 import NewReply from "./newReply";
 
+import { ModalState } from "@/context/modal.context";
+
 const Reply = ({ reply, currentUser, commentID }) => {
   const [showReply, setShowReply] = useState(false);
   const [scoreNumber, setScoreNumber] = useState(reply.score);
-
+  const { prepDelete } = ModalState();
   useEffect(() => {
     setScoreNumber(reply.score);
   }, [reply.score]);
@@ -36,7 +38,7 @@ const Reply = ({ reply, currentUser, commentID }) => {
               <div className="flex gap-4 justify-end items-center">
                 {currentUser.id === author.id ? (
                   <>
-                    <button className="text-delete flex gap-1 items-center">
+                    <button className="text-delete flex gap-1 items-center" onClick={() => prepDelete(reply.id, "reply", author.id)}>
                       <FaTrash /> Delete
                     </button>
                     <button className="text-accent hover:text-light-grayish-blue flex gap-1 items-center">

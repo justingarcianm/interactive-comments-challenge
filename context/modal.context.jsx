@@ -8,7 +8,7 @@ const ModalContext = ({ children }) => {
   const [objType, setObjType] = useState("");
   const [authorId, setAuthorId] = useState("");
 
-  const prepDelete = (id, type, authorID) => {
+  const prepDelete = (id = null, type = "", authorID = "") => {
     setObjID(id);
     setObjType(type);
     setAuthorId(authorID);

@@ -2,7 +2,7 @@ import { ModalState } from "@/context/modal.context";
 import { useRouter } from "next/navigation";
 
 const Modal = ({ currentUserId }) => {
-  const { objID, objType, showModal, setShowModal, authorId } = ModalState();
+  const { objID, objType, showModal, setShowModal, authorId, prepDelete } = ModalState();
   const router = useRouter();
 
   const removeObj = async (id, type) => {
@@ -14,7 +14,6 @@ const Modal = ({ currentUserId }) => {
     if (type === "comment") {
       const data = await fetch(`/api/comments/${id}`, {
         method: "DELETE",
-        // body: JSON.stringify({ currentUserId, authorId, id }),
         headers: new Headers({
           "Content-Type": "application/json",
           Accept: "application/json",
@@ -22,10 +21,20 @@ const Modal = ({ currentUserId }) => {
       });
       const res = await data.json();
       router.refresh();
-      setShowModal(false);
+      prepDelete();
       if (!res.ok) console.error(res.message);
     } else {
-      console.log("reply");
+      const data = await fetch(`/api/replies/${id}`, {
+        method: "DELETE",
+        headers: new Headers({
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        }),
+      });
+      const res = await data.json();
+      router.refresh();
+      prepDelete();
+      if (!res.ok) console.error(res.message);
     }
   };
 
