@@ -16,6 +16,7 @@ const Comment = ({ comment, currentUser }) => {
   const [showEdit, setShowEdit] = useState(false);
   const [theContent, setTheContent] = useState(comment.content);
   const [modifiedDate, setModifiedDate] = useState(comment.createdAt);
+  const [currentReplies, setCurrentReplies] = useState(replies);
   const { showModal, prepDelete } = GlobalState();
 
   const updateStateData = (commentContent, commentDate) => {
@@ -77,7 +78,7 @@ const Comment = ({ comment, currentUser }) => {
                 )}
               </div>
             </div>
-            <div>
+            <div className="p-2">
               {showEdit ? (
                 <Edit
                   currentUserId={currentUser.id}
@@ -99,23 +100,23 @@ const Comment = ({ comment, currentUser }) => {
           currentUser={currentUser}
           commentAuthor={author.name}
           commentID={comment.id}
+          replyToID={comment.author.id}
         />
       )}
-      {replies && replies.length ? (
+      {currentReplies.length > 0 && (
         <div className="border-l-2 border-gray-300 my-6 ms-7">
           <div className="max-w-xl me-0 ms-auto flex flex-col gap-6">
-            {replies.map((reply) => (
+            {currentReplies.map((reply) => (
               <Reply
                 key={reply.id}
                 reply={reply}
                 currentUser={currentUser}
                 commentID={comment.id}
+                commentAuthor={author.name}
               />
             ))}
           </div>
         </div>
-      ) : (
-        ""
       )}
     </div>
   );

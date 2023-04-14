@@ -9,7 +9,7 @@ import NewReply from "./newReply";
 import Edit from "./edit";
 import Score from "./score";
 
-const Reply = ({ reply, currentUser, commentID }) => {
+const Reply = ({ reply, currentUser, commentID, commentAuthor }) => {
   const [showReply, setShowReply] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [theContent, setTheContent] = useState(reply.content);
@@ -22,7 +22,7 @@ const Reply = ({ reply, currentUser, commentID }) => {
     setShowEdit(!showEdit);
   };
 
-  const { author } = reply;
+  const { author, replyTo } = reply;
   return (
     <div className="flex flex-col gap-6">
       <div className="rounded shadow-md p-4 bg-very-light-gray">
@@ -76,8 +76,8 @@ const Reply = ({ reply, currentUser, commentID }) => {
                 )}
               </div>
             </div>
-            <div>
-              <span className={`${showEdit ? "text-light-grayish-blue" : "text-accent"} pe-1`}>@{author.name}</span>
+            <div className="p-2">
+              <span className={`${showEdit ? "text-light-grayish-blue" : "text-accent"} pe-1 font-semibold`}>@{replyTo.name}</span>
               {showEdit ? (
                 <Edit
                   currentUserId={currentUser.id}
@@ -99,6 +99,7 @@ const Reply = ({ reply, currentUser, commentID }) => {
           currentUser={currentUser}
           commentAuthor={author.name}
           commentID={commentID}
+          replyToID={reply.author.id}
         />
       )}
     </div>

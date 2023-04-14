@@ -14,6 +14,7 @@ export default async function handler(req, res) {
           authorId: reply.authorId,
           content: reply.content,
           commentID: reply.commentID,
+          replyToID: reply.replyToID,
         },
       });
       res.status(200).json(data);

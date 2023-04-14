@@ -9,6 +9,11 @@ export default async function handler(req, res) {
           replies: {
             include: {
               author: true,
+              replyTo: {
+                select: {
+                  name: true,
+                },
+              },
             },
           },
         },

@@ -14,7 +14,8 @@ model User {
   id    Int     @id @default(autoincrement())
   name  String @unique
   comments Comment[]
-  replies Reply[]
+  replies Reply[]@relation("CommentAuthor")
+  replyTo Reply[]@relation("ReplyingTo")
   imageWeb String?
   imagePNG String?
 }
@@ -32,10 +33,12 @@ model Comment {
 model Reply {
   id        Int     @id @default(autoincrement())
   createdAt DateTime @default(now())
-  author    User    @relation(fields: [authorId], references: [id])
+  author    User    @relation("CommentAuthor",fields: [authorId], references: [id])
   authorId  Int
   comment   Comment @relation(fields: [commentID], references: [id], onDelete: Cascade, onUpdate: Cascade)
   content String
   score Int         @default(0)
   commentID Int
+  replyTo User? @relation("ReplyingTo",fields: [replyToID], references: [id])
+  replyToID Int
 }

@@ -4,16 +4,23 @@ import Image from "next/image";
 
 import createReply from "@/lib/reply/create";
 
-const NewReply = ({ commentAuthor, currentUser, commentID }) => {
+const NewReply = ({ commentAuthor, currentUser, commentID, replyToID }) => {
   const [content, setContent] = useState("");
   const router = useRouter();
 
   const handleReply = async (e) => {
-    console.log("click");
     e.preventDefault();
-    const authorId = currentUser.id;
-    createReply(content, authorId, commentID);
-    // router.refresh();
+
+    const data = {
+      content,
+      replyToID,
+      authorId: currentUser.id,
+      commentID,
+    };
+    const createdReply = await createReply(data);
+    console.log(createdReply);
+
+    router.refresh();
   };
 
   return (
