@@ -1,48 +1,53 @@
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 
-const Edit = ({ currentUserId, data, type, id, authorID }) => {
-  const [content, setContent] = useState(data);
-  const router = useRouter();
+import updateComment from "@/lib/comments/update";
+import updateReply from "@/lib/reply/update";
+
+const Edit = ({ currentUserId, currentContent, type, id, authorID, updateStateData }) => {
+  const [content, setContent] = useState(currentContent);
 
   const handleEdit = async (e) => {
     e.preventDefault();
 
-    if (content === data || content === "") return;
+    if (content === currentContent || content === "") return;
 
-    const currentDate = new Date();
+    const date = new Date();
+
+    const data = {
+      id,
+      content,
+      currentUserId,
+      date,
+      authorID,
+    };
 
     if (type === "comment") {
-      const data = await fetch(`/api/comments/${id}`, {
-        method: "PATCH",
-        body: JSON.stringify({ content, currentUserId, authorID, currentDate }),
-        headers: new Headers({
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        }),
-      });
-      const res = await data.json();
-      router.refresh();
-      if (!res.ok) console.error(res.message);
-    } else {
-      const data = await fetch(`/api/replies/${id}`, {
-        method: "PATCH",
-        body: JSON.stringify({ content, currentUserId, authorID, currentDate }),
-        headers: new Headers({
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        }),
-      });
-      const res = await data.json();
-      router.refresh();
-      if (!res.ok) console.error(res.message);
+      updateComment(data);
     }
+    if (type === "reply") {
+      updateReply(data);
+    }
+
+    updateStateData(content, date);
   };
 
   return (
-    <form className="flex gap-4 justify-between items-start relative" onSubmit={handleEdit}>
-      <textarea className="p-4 bg-transparent rounded flex-grow" rows={6} placeholder="Add a comment..." onChange={(e) => setContent(e.target.value)} defaultValue={data} />
-      <button disabled={content === data} type="submit" className="px-6 py-2 rounded-lg bg-accent uppercase font-semibold">
+    <form
+      className="flex gap-4 justify-between items-start relative"
+      onSubmit={handleEdit}
+    >
+      <textarea
+        className="p-4 bg-transparent rounded flex-grow"
+        rows={6}
+        placeholder="Add a comment..."
+        onChange={(e) => setContent(e.target.value)}
+        defaultValue={currentContent}
+      />
+      <button
+        disabled={content === currentContent}
+        type="submit"
+        className="px-6 py-2 rounded-lg bg-accent uppercase font-semibold"
+      >
         Submit
       </button>
     </form>

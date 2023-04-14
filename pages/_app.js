@@ -1,10 +1,10 @@
-import { ModalContext } from "@/context/modal.context";
+import { StateProvider } from "@/context/global.context";
 import "@/styles/globals.css";
 
 export default function App({ Component, pageProps }) {
   return (
-    <ModalContext>
+    <StateProvider>
       <Component {...pageProps} />
-    </ModalContext>
+    </StateProvider>
   );
 }

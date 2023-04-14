@@ -1,19 +1,27 @@
+import { useState, useEffect } from "react";
 import Head from "next/head";
 import { Rubik } from "next/font/google";
 
-import { ModalState } from "@/context/modal.context";
+import { GlobalState } from "@/context/global.context";
 import Comment from "@/components/comment";
 import NewComment from "@/components/newComment";
 import Modal from "@/components/modal";
+
+import getComments from "@/lib/comments/get";
+import getUser from "@/lib/user/get";
 
 const font = Rubik({
   subsets: ["latin"],
   display: "swap",
 });
 
-function Home({ comments, currentUser }) {
+function Home({ comments, user }) {
   // console.log(comments);
-  const { showModal } = ModalState();
+  const { showModal, currentUser, setCurrentUser, currentComments, setCurrentComments } = GlobalState();
+
+  useEffect(() => {
+    setCurrentUser(user);
+  }, [user, setCurrentUser]);
 
   return (
     <>
@@ -23,13 +31,14 @@ function Home({ comments, currentUser }) {
       <main className={`${font.className} bg-light-gray relative`}>
         <div className="mx-auto max-w-3xl p-8 flex flex-col gap-6 min-h-screen">
           <section className="flex flex-col gap-6">
-            {comments && comments.length ? (
-              comments.map((comment) => <Comment key={comment.id} comment={comment} currentUser={currentUser} />)
-            ) : (
-              <>
-                <h3>No Comments</h3>
-              </>
-            )}
+            {comments.length > 0 &&
+              comments.map((comment) => (
+                <Comment
+                  key={comment.id}
+                  comment={comment}
+                  currentUser={currentUser}
+                />
+              ))}
           </section>
 
           <section className="">
@@ -43,18 +52,13 @@ function Home({ comments, currentUser }) {
 }
 
 export async function getServerSideProps() {
-  const URL = process.env.NEXT_PUBLIC_VERCEL_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` : "http://localhost:3000";
-
-  const res = await fetch(`${URL}/api/comments`);
-  const comments = await res.json();
-
-  const resUser = await fetch(`${URL}/api/user`);
-  const currentUser = await resUser.json();
+  const comments = await getComments();
+  const user = await getUser();
 
   return {
     props: {
       comments,
-      currentUser,
+      user,
     },
   };
 }
